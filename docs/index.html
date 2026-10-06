@@ -205,6 +205,19 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
+(() => {
+  try {
+    if (/^(localhost|127\.|\[::1\])/.test(location.hostname)) return;
+    const sc = document.createElement('script');
+    sc.async = true;
+    sc.dataset.goatcounter = 'https://alabcar.goatcounter.com/count';
+    sc.src = 'https://gc.zgo.at/count.js';
+    document.head.appendChild(sc);
+  } catch (e) {}
+})();
+function track(name) {
+  try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: 'jugar/' + name, title: 'Partida: ' + name, event: true }); } catch (e) {}
+}
 const TAU = Math.PI * 2;
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const lerp = (a, b, k) => a + (b - a) * k;
@@ -807,6 +820,7 @@ function spawn() {
   }
 }
 function begin() {
+  track('solfeo');
   ensureAudio(); clearPreview();
   score = 0; combo = 0; lives = maxLives(); completed = 0; reviewCache = {};
   particles = []; floaters = [];
